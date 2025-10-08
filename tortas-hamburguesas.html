@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fonda Las Flores - Tortas y Hamburguesas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #c0392b;
+            --secondary-color: #e74c3c;
+            --accent-color: #d35400;
+            --light-color: #fbeee6;
+            --dark-color: #333;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        /* Encabezado */
+        header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+        
+        .restaurant-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-info {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Botón de regreso */
+        .back-button {
+            display: inline-block;
+            margin: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            background-color: #b34700;
+            transform: translateX(-5px);
+        }
+        
+        /* Contenedor principal */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        /* Título de sección */
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Categorías */
+        .category-title {
+            color: var(--primary-color);
+            margin: 2.5rem 0 1.5rem 0;
+            padding-left: 0.8rem;
+            border-left: 5px solid var(--accent-color);
+            font-size: 1.6rem;
+        }
+        
+        /* Carrusel de imágenes para tortas */
+        .tortas-carousel {
+            margin-bottom: 2rem;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .carousel-container {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .carousel-slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .carousel-slide.active {
+            display: block;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 1rem;
+        }
+        
+        .carousel-btn {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .carousel-indicator.active {
+            background: white;
+        }
+        /* Carrusel de imágenes para tortas */
+        .tortas-carousel {
+            margin-bottom: 2rem;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .carousel-container {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .carousel-slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out; /* ← TRANSICIÓN AGREGADA */
+        }
+
+        .carousel-slide.active {
+            display: block;
+            opacity: 1; /* ← TRANSICIÓN AGREGADA */
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Desglose de tortas */
+        .tortas-desglose {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .torta-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: 1px dashed #eee;
+            transition: background-color 0.3s;
+        }
+        
+        .torta-option:hover {
+            background-color: #fff8f0;
+        }
+        
+        .torta-option:last-child {
+            border-bottom: none;
+        }
+        
+        .torta-name {
+            font-weight: 500;
+        }
+        
+        .torta-price {
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        
+        .torta-add-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .torta-add-btn:hover {
+            background-color: #a33226;
+        }
+        
+        /* Grid de items del menú */
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        /* Items individuales */
+        .menu-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .menu-item:hover .item-image img {
+            transform: scale(1.05);
+        }
+        
+        .item-info {
+            padding: 1.5rem;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .item-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .item-price {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .add-to-cart {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #a33226;
+        }
+        
+    /* Botón flotante del carrito */
+    .cart-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 101;
+    }
+
+    .cart-button {
+      background: var(--primary-color);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--secondary-color);
+      color: var(--dark-color);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    /* Modal carrito */
+    .cart-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cart-content {
+      background: white;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      padding: 2rem;
+      position: relative;
+    /* AGREGAR ESTA LÍNEA */
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .close-cart {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .cart-items { margin: 1rem 0; }
+
+    .cart-total {
+      font-weight: bold;
+      text-align: right;
+      margin: 1rem 0;
+    }
+
+    .checkout-btn {
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 4px;
+      width: 100%;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .checkout-btn:hover {
+      background: #246c34;
+    }
+
+    /* Modal checkout */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1100;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      position: relative;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .close-checkout {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+      text-align: center;
+    }
+
+    .modal-content form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-content input,
+    .modal-content select {
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal-content button {
+      background: var(--accent-color);
+      color: #fff;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    @keyframes fadeIn {
+      from {opacity:0; transform:scale(0.95);}
+      to {opacity:1; transform:scale(1);}
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+        
+        /* Pie de página */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .social-links {
+            margin: 1rem 0;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-container {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .category-title {
+                font-size: 1.4rem;
+            }
+            
+            .torta-option {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .torta-add-btn {
+                margin-top: 0.5rem;
+                align-self: flex-end;
+            }
+            
+            .carousel-container {
+                height: 250px;
+            }
+            
+            .carousel-caption {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="logo-container">
+            <i class="fas fa-utensils logo"></i>
+            <div>
+                <h1 class="restaurant-name">Fonda Las Flores</h1>
+                <p class="tagline">Tortas y Hamburguesas</p>
+            </div>
+        </div>
+        <div class="contact-info">
+            <p>Mariano Matamoros #2, Centro, Jalpan de Serra, Qro. | Tel: (441) 1157720</p>
+        </div>
+    </header>
+    
+    <!-- Botón de regreso -->
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Volver al Inicio
+    </a>
+    
+    <!-- Contenedor principal -->
+    <div class="container">
+        <h2 class="section-title">Tortas y Hamburguesas</h2>
+        
+        <!-- Sección de Tortas con carrusel -->
+        <h3 class="category-title">Tortas</h3>
+        
+        <!-- Carrusel de imágenes para tortas -->
+        <div class="tortas-carousel">
+            <div class="carousel-container">
+                <div class="carousel-slide active">
+                    <img src="Torta_Cuban.jpg" alt="Nuestras Tortas">
+                    <div class="carousel-caption">
+                        <h3>Nuestras Deliciosas Tortas</h3>
+                        <p>Preparadas con ingredientes frescos y de la más alta calidad</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwMCIgaGVpZ2h0PSI0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2ZmZWNiYyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNkNDkwMDAiPlRvcnRhIGRlIE1pbGFuZXNhPC90ZXh0Pjwvc3ZnPg==" alt="Torta de Milanesa">
+                    <div class="carousel-caption">
+                        <h3>Torta de Milanesa de Res</h3>
+                        <p>Jugosa milanesa empanizada con lechuga, jitomate, aguacate y mayonesa</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwMCIgaGVpZ2h0PSI0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2U3ZWZkMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM0Mjg1ZjQiPlRvcnRhIGRlIFBpZXJuYSBBZG9iYWRhPC90ZXh0Pjwvc3ZnPg==" alt="Torta de Pierna">
+                    <div class="carousel-caption">
+                        <h3>Torta de Pierna Adobada</h3>
+                        <p>Deliciosa pierna de cerdo adobada con todos los ingredientes tradicionales</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwMCIgaGVpZ2h0PSI0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2ZkZjJlYiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNlNzc0MDAiPlRvcnRhIGRlIENoaWxhcXVpbGVzPC90ZXh0Pjwvc3ZnPg==" alt="Torta de Chilaquiles">
+                    <div class="carousel-caption">
+                        <h3>Torta de Chilaquiles</h3>
+                        <p>Chilaquiles verdes o rojos con pollo, crema y queso en un delicioso pan</p>
+                    </div>
+                </div>
+                
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                
+                <div class="carousel-indicators">
+                    <span class="carousel-indicator active" data-slide="0"></span>
+                    <span class="carousel-indicator" data-slide="1"></span>
+                    <span class="carousel-indicator" data-slide="2"></span>
+                    <span class="carousel-indicator" data-slide="3"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Desglose de tortas -->
+        <div class="tortas-desglose">
+            <div class="torta-option">
+                <span class="torta-name">Torta de Milanesa de Res</span>
+                <div>
+                    <span class="torta-price">$90.00</span>
+                    <button class="torta-add-btn" onclick="addToCart('Torta de Milanesa de Res', 0, 'Tortas/Hamburguesas')">
+                        <i class="fas fa-cart-plus"></i> Agregar
+                    </button>
+                </div>
+            </div>
+            <div class="torta-option">
+                <span class="torta-name">Torta de Pierna Adobada</span>
+                <div>
+                    <span class="torta-price">$85.00</span>
+                    <button class="torta-add-btn" onclick="addToCart('Torta de Pierna Adobada', 0, 'Tortas/Hamburguesas')">
+                        <i class="fas fa-cart-plus"></i> Agregar
+                    </button>
+                </div>
+            </div>
+            <div class="torta-option">
+                <span class="torta-name">Torta de Jamón</span>
+                <div>
+                    <span class="torta-price">$70.00</span>
+                    <button class="torta-add-btn" onclick="addToCart('Torta de Jamón', 0, 'Tortas/Hamburguesas')">
+                        <i class="fas fa-cart-plus"></i> Agregar
+                    </button>
+                </div>
+            </div>
+            <div class="torta-option">
+                <span class="torta-name">Torta de Chorizo</span>
+                <div>
+                    <span class="torta-price">$75.00</span>
+                    <button class="torta-add-btn" onclick="addToCart('Torta de Chorizo', 0, 'Tortas/Hamburguesas')">
+                        <i class="fas fa-cart-plus"></i> Agregar
+                    </button>
+                </div>
+            </div>
+            <div class="torta-option">
+                <span class="torta-name">Torta de Chilaquiles</span>
+                <div>
+                    <span class="torta-price">$80.00</span>
+                    <button class="torta-add-btn" onclick="addToCart('Torta de Chilaquiles', 0, 'Tortas/Hamburguesas')">
+                        <i class="fas fa-cart-plus"></i> Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de Hamburguesas (con imágenes) -->
+        <h3 class="category-title">Hamburguesas</h3>
+        <div class="menu-items">
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="Hamburgesa.jpg" alt="Hamburguesa Clásica">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Hamburguesa Clásica</h3>
+                    <p class="item-description">Hamburguesa con carne de res, queso, lechuga, jitomate, cebolla y mayonesa. Acompañada de papas fritas.</p>
+                    <p class="item-price">$85.00 MXN</p>
+                    <button class="add-to-cart" onclick="addToCart('Hamburguesa Clásica', 0, 'Tortas/Hamburguesas')">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="Hamburgesa2.jpg" alt="Hamburguesa Especial">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Hamburguesa Especial</h3>
+                    <p class="item-description">Hamburguesa con doble carne, queso, tocino, lechuga, jitomate, cebolla y salsa BBQ. Acompañada de papas fritas.</p>
+                    <p class="item-price">$120.00 MXN</p>
+                    <button class="add-to-cart" onclick="addToCart('Hamburguesa Especial', 0, 'Tortas/Hamburguesas')">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de Sincronizadas (con imágenes) -->
+        <h3 class="category-title">Sincronizadas</h3>
+        <div class="menu-items">
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="sincronizada.jpeg" alt="Sincronizadas">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Sincronizadas</h3>
+                    <p class="item-description">Tortillas de harina rellenas de jamón y queso derretido. Acompañadas de aguacate, crema y salsa.</p>
+                    <p class="item-price">$75.00 MXN</p>
+                    <button class="add-to-cart" onclick="addToCart('Sincronizadas', 0, 'Tortas/Hamburguesas')">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="sincronizada2.jpg" alt="Sincronizadas Especiales">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Sincronizadas Especiales</h3>
+                    <p class="item-description">Tortillas de harina rellenas de jamón, queso, chorizo y aguacate. Acompañadas de crema y salsa.</p>
+                    <p class="item-price">$90.00 MXN</p>
+                    <button class="add-to-cart" onclick="addToCart('Sincronizadas Especiales', 0, 'Tortas/Hamburguesas')">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de Sándwiches (con imágenes) -->
+        <h3 class="category-title">Sándwiches</h3>
+        <div class="menu-items">
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="sincronizada.jpeg" alt="Sándwich de Pollo">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Sándwich de Pollo</h3>
+                    <p class="item-description">Sándwich con pollo deshebrado, lechuga, jitomate, mayonesa y aguacate. Servido en pan de caja.</p>
+                    <p class="item-price">$65.00 MXN</p>
+                    <button class="add-to-cart" onclick="addToCart('Sándwich de Pollo', 0, 'Tortas/Hamburguesas')">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTdlZmQxIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWl5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzQyODVmNCI+U8OhbmR3aWNoIENsdWI8L3RleHQ+PC9zdmc+" alt="Sándwich Club">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Sándwich Club</h3>
+                    <p class="item-description">Sándwich con pollo, jamón, tocino, queso, lechuga, jitomate y mayonesa. Servido en pan tostado.</p>
+                    <p class="item-price">$95.00 MXN</p>
+                    <button class="add-to-cart" onclick="addToCart('Sándwich Club', 0, 'Tortas/Hamburguesas')">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de Salchipapas (con imágenes) -->
+        <h3 class="category-title">Salchipapas</h3>
+        <div class="menu-items">
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="salchipapas.jpg" alt="Salchipapas">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Salchipapas</h3>
+                    <p class="item-description">Papas fritas con salchichas, queso derretido, jamón y catsup. Perfecto para compartir.</p>
+                    <p class="item-price">$80.00 MXN</p>
+                    <button class="add-to-cart" onclick="addToCart('Salchipapas', 0, 'Tortas/Hamburguesas')">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="salchipapas2.jpg" alt="Salchipapas Especiales">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Salchipapas Especiales</h3>
+                    <p class="item-description">Papas fritas con salchichas, chorizo, queso derretido, tocino, jamón y aderezos. Perfecto para compartir.</p>
+                    <p class="item-price">$110.00 MXN</p>
+                    <button class="add-to-cart" onclick="addToCart('Salchipapas Especiales', 0, 'Tortas/Hamburguesas')">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  <!-- Botón flotante carrito -->
+  <div class="cart-container">
+    <div class="cart-button" onclick="openCartModal()">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-count">0</span>
+    </div>
+  </div>
+
+  <!-- Modal carrito -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-content">
+      <span class="close-cart" onclick="closeCartModal()">&times;</span>
+      <h2>Tu Carrito de Compra</h2>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-total" id="cartTotal">Total: $0.00 MXN</div>
+      <button class="checkout-btn">Realizar Pedido</button>
+    </div>
+  </div>
+
+  <!-- Modal datos del cliente -->
+  <div id="checkout-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-checkout" onclick="closeCheckoutModal()">&times;</span>
+      <h2>Datos del Pedido</h2>
+      <form id="checkout-form">
+        <label for="user-name">Nombre:</label>
+        <input type="text" id="user-name" required>
+
+        <label for="user-address">Dirección de entrega:</label>
+        <input type="text" id="user-address" required>
+
+        <label for="user-phone">Teléfono:</label>
+        <input type="tel" id="user-phone" required>
+
+        <label for="user-payment">Forma de pago:</label>
+        <select id="user-payment" required>
+          <option value="">Selecciona una opción</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Transferencia">Transferencia</option>
+        </select>
+
+        <button type="button">Hacer Pedido</button>
+      </form>
+    </div>
+  </div>
+
+<!-- Pie de página -->
+<footer>
+    <div class="footer-content">
+        <p id="current-year">© 2023 Fonda Las Flores - Todos los derechos reservados</p>
+        <p>Horario: Lunes a Domingo 8:00 AM - 5:00 PM</p>
+    </div>
+</footer>
+
+<script>
+    // Actualizar año automáticamente
+    document.getElementById('current-year').textContent = 
+        `© ${new Date().getFullYear()} Fonda Las Flores - Todos los derechos reservados`;
+</script>
+
+<!-- Script para el carrusel de tortas -->
+<!-- Script ESPECÍFICO para el carrusel de tortas -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Carrusel de tortas - FUNCIONES CON NOMBRES DIFERENTES
+    const tortaSlides = document.querySelectorAll('.carousel-slide');
+    const tortaIndicators = document.querySelectorAll('.carousel-indicator');
+    const tortaPrevBtn = document.querySelector('.prev-btn');
+    const tortaNextBtn = document.querySelector('.next-btn');
+    
+    // Verificar que existe este carrusel
+    if (tortaSlides.length === 0) return;
+    
+    let tortaCurrentSlide = 0;
+    let tortaCarouselInterval;
+
+    function showTortaSlide(index) {
+        // Ocultar todos los slides
+        tortaSlides.forEach(slide => slide.classList.remove('active'));
+        tortaIndicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Asegurarse de que el índice esté dentro de los límites
+        if (index >= tortaSlides.length) {
+            tortaCurrentSlide = 0;
+        } else if (index < 0) {
+            tortaCurrentSlide = tortaSlides.length - 1;
+        } else {
+            tortaCurrentSlide = index;
+        }
+        
+        // Mostrar el slide actual
+        tortaSlides[tortaCurrentSlide].classList.add('active');
+        tortaIndicators[tortaCurrentSlide].classList.add('active');
+    }
+
+    function nextTortaSlide() {
+        showTortaSlide(tortaCurrentSlide + 1);
+    }
+
+    function prevTortaSlide() {
+        showTortaSlide(tortaCurrentSlide - 1);
+    }
+
+    // Configurar eventos para los botones de navegación
+    if (tortaNextBtn) {
+        tortaNextBtn.addEventListener('click', () => {
+            nextTortaSlide();
+            resetTortaCarouselInterval();
+        });
+    }
+
+    if (tortaPrevBtn) {
+        tortaPrevBtn.addEventListener('click', () => {
+            prevTortaSlide();
+            resetTortaCarouselInterval();
+        });
+    }
+
+    // Configurar eventos para los indicadores
+    tortaIndicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            showTortaSlide(index);
+            resetTortaCarouselInterval();
+        });
+    });
+
+    // Iniciar el intervalo automático
+    function startTortaCarouselInterval() {
+        tortaCarouselInterval = setInterval(nextTortaSlide, 4000);
+    }
+
+    // Reiniciar el intervalo cuando el usuario interactúe con el carrusel
+    function resetTortaCarouselInterval() {
+        clearInterval(tortaCarouselInterval);
+        startTortaCarouselInterval();
+    }
+
+    // Iniciar el carrusel
+    showTortaSlide(tortaCurrentSlide);
+    startTortaCarouselInterval();
+
+    // Pausar el carrusel cuando el mouse está sobre él
+    const tortaCarouselContainer = document.querySelector('.carousel-container');
+    if (tortaCarouselContainer) {
+        tortaCarouselContainer.addEventListener('mouseenter', () => {
+            clearInterval(tortaCarouselInterval);
+        });
+        
+        tortaCarouselContainer.addEventListener('mouseleave', () => {
+            startTortaCarouselInterval();
+        });
+    }
+});
+</script>
+
+<!-- Carga el carrito -->
+<script src="init.js" defer></script>
+<script src="carrito.js" defer></script>
+<script>
+// SCRIPT MEJORADO PARA ACTUALIZAR PRECIOS EN TORTAS Y HAMBURGUESAS
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Iniciando verificación de precios para tortas...');
+    
+    function updateAllPrices() {
+        const products = JSON.parse(localStorage.getItem('fondaLasFloresProducts')) || [];
+        console.log(`📦 Buscando precios en ${products.length} productos`);
+        
+        // 1. ACTUALIZAR PRECIOS DE TORTAS (estructura específica)
+        document.querySelectorAll('.torta-option').forEach(tortaOption => {
+            const priceElement = tortaOption.querySelector('.torta-price');
+            const nameElement = tortaOption.querySelector('.torta-name');
+            
+            if (priceElement && nameElement) {
+                const productName = nameElement.textContent.trim();
+                
+                // Buscar el producto en TODAS las categorías
+                const product = products.find(p => p.name === productName);
+                if (product) {
+                    const newPrice = `$${product.price.toFixed(2)}`;
+                    if (priceElement.textContent !== newPrice) {
+                        priceElement.textContent = newPrice;
+                        console.log(`✅ Torta actualizada: ${productName} - ${newPrice}`);
+                    }
+                }
+            }
+        });
+        
+        // 2. ACTUALIZAR PRECIOS DE ITEMS REGULARES
+        document.querySelectorAll('.item-price').forEach(priceElement => {
+            const menuItem = priceElement.closest('.menu-item');
+            if (menuItem) {
+                const titleElement = menuItem.querySelector('.item-title');
+                if (titleElement) {
+                    const productName = titleElement.textContent.trim();
+                    const product = products.find(p => p.name === productName);
+                    if (product) {
+                        const newPrice = `$${product.price.toFixed(2)} MXN`;
+                        if (priceElement.textContent !== newPrice) {
+                            priceElement.textContent = newPrice;
+                            console.log(`✅ Item actualizado: ${productName} - ${newPrice}`);
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Inicializar inmediatamente
+    setTimeout(updateAllPrices, 300);
+    
+    // Actualizar cada 2 segundos
+    setInterval(updateAllPrices, 2000);
+    
+    // También actualizar cuando se hace clic en cualquier botón (por si acaso)
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('add-to-cart') || 
+            e.target.closest('.add-to-cart') ||
+            e.target.classList.contains('torta-add-btn') ||
+            e.target.closest('.torta-add-btn')) {
+            setTimeout(updateAllPrices, 100);
+        }
+    });
+});
+</script>
+</body>
+</html>

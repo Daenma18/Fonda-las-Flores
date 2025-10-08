@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fonda Las Flores - Tacos y Gorditas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos específicos para la página de Tacos y Gorditas */
+        :root {
+            --primary-color: #d35400;
+            --secondary-color: #f39c12;
+            --accent-color: #c0392b;
+            --light-color: #fef9e7;
+            --dark-color: #333;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        /* Encabezado */
+        header {
+            background: linear-gradient(to right, var(--primary-color), #e67e22);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+        
+        .restaurant-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-info {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Botón de regreso */
+        .back-button {
+            display: inline-block;
+            margin: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        /* Contenedor principal */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        /* Título de sección */
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Grid de items del menú */
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        /* Items individuales */
+        .menu-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item-image {
+            height: 200px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            overflow: hidden;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .item-info {
+            padding: 1.5rem;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .item-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .item-price {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .add-to-cart {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #bf4c00;
+        }
+        
+        /* Modal para selección de guisados */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .guisados-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .guisado-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .guisado-item:hover {
+            background-color: #f9f9f9;
+            border-color: var(--primary-color);
+        }
+        
+        .guisado-item.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .guisado-category {
+            grid-column: 1 / -1;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            color: var(--primary-color);
+        }
+        
+        .selected-guisados {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .selected-guisados h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .selected-list {
+            list-style-type: none;
+        }
+        
+        .selected-list li {
+            padding: 0.3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .remove-guisado {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 50%;
+            background-color: #ffeaea;
+        }
+
+        /* Precio dinámico */
+        .price-display {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            background-color: #fff3e0;
+            border-radius: 4px;
+        }
+        
+        /* Botón flotante del carrito */
+        .cart-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 101;
+        }
+        
+        .cart-button {
+            background-color: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--secondary-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* Modal del carrito */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .cart-modal-content {
+            background-color: white;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            position: relative;
+                /* AGREGAR ESTA LÍNEA */
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .cart-items {
+            margin: 1.5rem 0;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item-info {
+            flex-grow: 1;
+        }
+        
+        .cart-item-name {
+            font-weight: bold;
+        }
+        
+        .cart-item-price {
+            color: var(--accent-color);
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            background-color: #eee;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .quantity-value {
+            margin: 0 0.5rem;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .cart-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--secondary-color);
+        }
+        
+        .checkout-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .empty-cart-message {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        /* Separador de pedidos */
+        .pedido-separator {
+            border-top: 2px dashed #ccc;
+            margin: 1rem 0;
+            padding: 0.5rem 0;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+        }
+        
+        /* Estilos para el modal de datos del cliente */
+        #checkout-modal .modal-content {
+            max-width: 500px;
+        }
+        
+        #checkout-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #checkout-form label {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        #checkout-form input, #checkout-form select {
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        #checkout-form button {
+            margin-top: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        /* Pie de página */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .social-links {
+            margin: 1rem 0;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+        }
+        
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .guisados-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-container {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .modal-content, .cart-modal-content {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .cart-item-quantity {
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="logo-container">
+            <i class="fas fa-utensils logo"></i>
+            <div>
+                <h1 class="restaurant-name">Fonda Las Flores</h1>
+                <p class="tagline">Tacos y Gorditas</p>
+            </div>
+        </div>
+        <div class="contact-info">
+            <p>Mariano Matamoros #2, Centro, Jalpan de Serra, Qro. | Tel: (441) 1157720</p>
+        </div>
+    </header>
+    
+    <!-- Botón de regreso -->
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Volver al Inicio
+    </a>
+    
+    <!-- Contenedor principal -->
+    <div class="container">
+        <h2 class="section-title">Tacos y Gorditas</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Selecciona el tipo de base y luego elige uno o varios guisados</p>
+        
+        <div class="menu-items">
+            <!-- Gorditas de Migajas -->
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Gorditas de Migajas">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Gorditas de Migajas</h3>
+                    <p class="item-description">Deliciosas gorditas rellenas de migajas de chicharrón, frijoles, queso y tu elección de guisados.</p>
+                    <p class="item-price" id="price-gorditas-migajas">Cargando precio...</p>
+                    <button class="add-to-cart" onclick="openGuisadosModal('Gordita de Migajas', getProductPrice('Gorditas de Migajas'), 'fixed')">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <!-- Gorditas Normales -->
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Gorditas">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Gorditas</h3>
+                    <p class="item-description">Gorditas tradicionales rellenas de tu elección de guisados. Precio por orden.</p>
+                    <p class="item-price" id="price-gorditas">Cargando precio...</p>
+                    <button class="add-to-cart" onclick="openGuisadosModal('Gordita', getProductPrice('Gorditas'), 'fixed')">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <!-- Sopes -->
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Sopes">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Sopes (por orden)</h3>
+                    <p class="item-description">Sopes tradicionales con base de masa, frijoles, lechuga, queso, crema y tu elección de guisados.</p>
+                    <p class="item-price" id="price-sopes">Cargando precio...</p>
+                    <button class="add-to-cart" onclick="openGuisadosModal('Sope', getProductPrice('Sopes'), 'fixed')">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <!-- Quesadillas -->
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Quesadillas">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Quesadillas</h3>
+                    <p class="item-description">Tortillas de maíz o harina rellenas de queso y tu elección de guisados. Acompañadas de salsa y crema.</p>
+                    <p class="item-price" id="price-quesadillas">Cargando precio...</p>
+                    <button class="add-to-cart" onclick="openGuisadosModal('Quesadilla', getProductPrice('Quesadillas'), 'fixed')">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <!-- Tacos -->
+            <div class="menu-item">
+                <div class="item-image">
+                    <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Tacos">
+                </div>
+                <div class="item-info">
+                    <h3 class="item-title">Tacos</h3>
+                    <p class="item-description">Tortillas de maíz con tu elección de guisados. Servidos con cilantro, cebolla y limón. Precio por taco.</p>
+                    <p class="item-price" id="price-tacos">Cargando precio...</p>
+                    <button class="add-to-cart" onclick="openGuisadosModal('Taco', getProductPrice('Tacos'), 'perunit')">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para selección de guisados -->
+    <div id="guisados-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeGuisadosModal()">&times;</span>
+            <h2 id="modal-title">Selecciona uno o varios guisados</h2>
+            
+            <div class="price-display">
+                Precio final: <span id="final-price">$0.00</span> MXN
+            </div>
+            
+            <div class="selected-guisados">
+                <h3>Guisados seleccionados:</h3>
+                <ul id="selected-list" class="selected-list">
+                    <li>No hay guisados seleccionados</li>
+                </ul>
+            </div>
+            
+            <div class="guisados-grid">
+                <div class="guisado-category">Guisados sin picante</div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Salchicha a la Mexicana')">
+                    <h4>Salchicha a la Mexicana</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Picadillo')">
+                    <h4>Picadillo</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Tinga de Pollo')">
+                    <h4>Tinga de Pollo</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Nopales')">
+                    <h4>Nopales</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Queso')">
+                    <h4>Queso</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Rajas con Crema')">
+                    <h4>Rajas con Crema</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Frijoles')">
+                    <h4>Frijoles</h4>
+                </div>
+                
+                <div class="guisado-category">Guisados picantes</div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Huevo en Salsa Roja')">
+                    <h4>Huevo en Salsa Roja</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Bistec a la Mexicana')">
+                    <h4>Bistec a la Mexicana</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Chicharrón en Salsa Verde')">
+                    <h4>Chicharrón en Salsa Verde</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Bistec de Puerco en Salsa Verde')">
+                    <h4>Bistec de Puerco en Salsa Verde</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Pollo en Mole Poblano')">
+                    <h4>Pollo en Mole Poblano</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Tunas')">
+                    <h4>Tunas</h4>
+                </div>
+                
+                <div class="guisado-item" onclick="toggleGuisado(this, 'Bistec en Pasilla')">
+                    <h4>Bistec en Pasilla</h4>
+                </div>
+            </div>
+            
+            <button id="add-to-cart-final" class="add-to-cart" style="margin-top: 2rem;" onclick="addToCartFinal()">Agregar al Carrito</button>
+        </div>
+    </div>
+    
+    <!-- Modal del carrito -->
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-modal close-cart">&times;</span>
+            <h2>Tu Carrito de Compras</h2>
+            
+            <div id="cartItems" class="cart-items">
+                <div class="empty-cart-message">
+                    <p>Tu carrito está vacío</p>
+                </div>
+            </div>
+            
+            <div id="cartTotal" class="cart-total">
+                Total: $0.00 MXN
+            </div>
+            
+            <button class="checkout-btn" onclick="checkout()">Realizar Pedido</button>
+        </div>
+    </div>
+    
+    <!-- Modal datos del cliente -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal close-checkout">&times;</span>
+            <h2>Datos del Pedido</h2>
+            <form id="checkout-form">
+                <label for="user-name">Nombre:</label>
+                <input type="text" id="user-name" required>
+
+                <label for="user-address">Dirección de entrega:</label>
+                <input type="text" id="user-address" required>
+
+                <label for="user-phone">Teléfono:</label>
+                <input type="tel" id="user-phone" required>
+
+                <label for="user-payment">Forma de pago:</label>
+                <select id="user-payment" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia">Transferencia</option>
+                </select>
+
+                <button type="button" onclick="processOrder()">Hacer Pedido</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Botón flotante del carrito -->
+    <div class="cart-container">
+        <div class="cart-button">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+        </div>
+    </div>
+    
+<!-- Pie de página -->
+<footer>
+    <div class="footer-content">
+        <p id="current-year">© 2023 Fonda Las Flores - Todos los derechos reservados</p>
+            <div class="social-links">
+        <p>Horario: Lunes a Domingo 8:00 AM - 5:00 PM</p>
+    </div>
+</footer>
+
+<script>
+    // Actualizar año automáticamente
+    document.getElementById('current-year').textContent = 
+        `© ${new Date().getFullYear()} Fonda Las Flores - Todos los derechos reservados`;
+</script>
+
+    <!-- Conectar con el archivo carrito.js externo -->
+    <script src="carrito.js"></script>
+    
+    <script>
+        // =============================================
+        // CÓDIGO ESPECÍFICO PARA LA SELECCIÓN DE GUISADOS
+        // =============================================
+        
+        // Variables para la selección actual
+        let currentBase = '';
+        let currentBasePrice = 0;
+        let pricingModel = ''; // 'fixed' or 'perunit'
+        let selectedGuisados = [];
+        
+        // Función para obtener precios desde localStorage
+        function getProductPrice(productName) {
+            try {
+                const products = JSON.parse(localStorage.getItem('fondaLasFloresProducts')) || [];
+                const product = products.find(p => p.name === productName && p.category === "Tacos/Gorditas");
+                return product ? product.price : 0;
+            } catch (error) {
+                console.error('Error al obtener precio:', error);
+                return 0;
+            }
+        }
+        
+        // Función para actualizar precios en la página
+        function updatePrices() {
+            const products = JSON.parse(localStorage.getItem('fondaLasFloresProducts')) || [];
+            
+            // Actualizar cada producto
+            const productPrices = {
+                'Gorditas de Migajas': document.getElementById('price-gorditas-migajas'),
+                'Gorditas': document.getElementById('price-gorditas'),
+                'Sopes': document.getElementById('price-sopes'),
+                'Quesadillas': document.getElementById('price-quesadillas'),
+                'Tacos': document.getElementById('price-tacos')
+            };
+            
+            Object.keys(productPrices).forEach(productName => {
+                const product = products.find(p => p.name === productName && p.category === "Tacos/Gorditas");
+                if (product && productPrices[productName]) {
+                    productPrices[productName].textContent = `$${product.price.toFixed(2)} MXN`;
+                }
+            });
+        }
+        
+        // Función para abrir el modal de selección de guisados
+        function openGuisadosModal(base, basePrice, pricing) {
+            currentBase = base;
+            currentBasePrice = basePrice;
+            pricingModel = pricing;
+            selectedGuisados = [];
+            
+            document.getElementById('modal-title').textContent = `Selecciona uno o varios guisados para tu ${base}`;
+            updateFinalPrice();
+            
+            // Resetear selecciones anteriores
+            const guisados = document.querySelectorAll('.guisado-item');
+            guisados.forEach(item => item.classList.remove('selected'));
+            
+            // Actualizar lista de seleccionados
+            updateSelectedList();
+            
+            // Mostrar el modal
+            document.getElementById('guisados-modal').style.display = 'block';
+        }
+        
+        // Función para cerrar el modal
+        function closeGuisadosModal() {
+            document.getElementById('guisados-modal').style.display = 'none';
+        }
+        
+        // Función para seleccionar/deseleccionar un guisado
+        function toggleGuisado(element, guisado) {
+            element.classList.toggle('selected');
+            
+            if (element.classList.contains('selected')) {
+                // Agregar guisado a la lista
+                selectedGuisados.push(guisado);
+            } else {
+                // Remover guisado de la lista
+                const index = selectedGuisados.indexOf(guisado);
+                if (index > -1) {
+                    selectedGuisados.splice(index, 1);
+                }
+            }
+            
+            // Actualizar lista y precio
+            updateSelectedList();
+            updateFinalPrice();
+        }
+        
+        // Función para actualizar la lista de guisados seleccionados
+        function updateSelectedList() {
+            const selectedList = document.getElementById('selected-list');
+            
+            if (selectedGuisados.length === 0) {
+                selectedList.innerHTML = '<li>No hay guisados seleccionados</li>';
+                return;
+            }
+            
+            selectedList.innerHTML = '';
+            selectedGuisados.forEach(guisado => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${guisado}
+                    <span class="remove-guisado" onclick="removeGuisado('${guisado}')">×</span>
+                `;
+                selectedList.appendChild(li);
+            });
+        }
+        
+        // Función para remover un guisado específico
+        function removeGuisado(guisado) {
+            // Remover de la lista
+            const index = selectedGuisados.indexOf(guisado);
+            if (index > -1) {
+                selectedGuisados.splice(index, 1);
+            }
+            
+            // Deseleccionar visualmente
+            const guisados = document.querySelectorAll('.guisado-item');
+            guisados.forEach(item => {
+                if (item.querySelector('h4').textContent === guisado) {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            // Actualizar lista y precio
+            updateSelectedList();
+            updateFinalPrice();
+        }
+        
+        // Función para actualizar el precio final
+        function updateFinalPrice() {
+            let finalPrice = currentBasePrice;
+            
+            // PARA TODOS LOS PRODUCTOS: el precio se multiplica por la cantidad de guisados seleccionados
+            finalPrice = currentBasePrice * Math.max(1, selectedGuisados.length);
+            
+            document.getElementById('final-price').textContent = `$${finalPrice.toFixed(2)}`;
+        }
+        
+        // Función para agregar la selección al carrito
+        function addToCartFinal() {
+            if (selectedGuisados.length === 0) {
+                alert('Por favor selecciona al menos un guisado');
+                return;
+            }
+            
+            let productName, finalPrice;
+            
+            // Crear un grupo único para este pedido
+            const pedidoId = 'pedido_' + Date.now();
+            
+            // PARA TODOS LOS PRODUCTOS: cada guisado es un producto individual
+            selectedGuisados.forEach((guisado, index) => {
+                productName = `${currentBase} de ${guisado}`;
+                finalPrice = currentBasePrice;
+                
+                // Usar la función addToCart del carrito.js
+                addToCart(productName, finalPrice, 'Tacos y Gorditas', pedidoId);
+            });
+            
+            // Cerrar el modal
+            closeGuisadosModal();
+        }
+        
+        // Cerrar el modal si se hace clic fuera de él
+        window.onclick = function(event) {
+            const guisadosModal = document.getElementById('guisados-modal');
+            
+            if (event.target === guisadosModal) {
+                closeGuisadosModal();
+            }
+        };
+        
+        // Inicializar precios cuando la página cargue
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePrices();
+            
+            // Verificar cambios en los precios cada 2 segundos
+            setInterval(updatePrices, 2000);
+        });
+    </script>
+</body>
+</html>

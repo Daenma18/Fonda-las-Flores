@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Base de Datos - Fonda Las Flores</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 600px; 
+            margin: 50px auto; 
+            padding: 20px; 
+        }
+        button { 
+            padding: 10px 15px; 
+            margin: 5px; 
+            cursor: pointer; 
+        }
+        .reset-btn { 
+            background: #e74c3c; 
+            color: white; 
+            border: none; 
+        }
+        .check-btn { 
+            background: #3498db; 
+            color: white; 
+            border: none; 
+        }
+        #result { 
+            margin-top: 20px; 
+            padding: 15px; 
+            border-radius: 5px; 
+        }
+        .success { background: #d4edda; color: #155724; }
+        .warning { background: #fff3cd; color: #856404; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Utilidad de Reset - Fonda Las Flores</h1>
+    
+    <p>Esta herramienta ayuda a diagnosticar y resolver problemas con la base de datos.</p>
+    
+    <button class="reset-btn" onclick="resetDatabase()">🗑️ Resetear Base de Datos</button>
+    <button class="check-btn" onclick="checkDatabase()">🔍 Verificar Estado Actual</button>
+    <button onclick="forceReinitialize()">🔄 Forzar Reinicialización</button>
+    
+    <div id="result"></div>
+
+    <script>
+        function checkDatabase() {
+            const products = localStorage.getItem('fondaLasFloresProducts');
+            const cart = localStorage.getItem('fondaLasFloresCart');
+            
+            const productsCount = products ? JSON.parse(products).length : 0;
+            const cartCount = cart ? JSON.parse(cart).length : 0;
+            
+            let status = 'correcto';
+            let cssClass = 'success';
+            
+            if (productsCount === 0) {
+                status = 'VACÍO - No hay productos';
+                cssClass = 'error';
+            } else if (productsCount < 37) {
+                status = 'INCOMPLETO - Solo ' + productsCount + ' de 37 productos';
+                cssClass = 'warning';
+            } else if (productsCount === 37) {
+                status = 'CORRECTO - 37 productos cargados';
+            } else {
+                status = 'SOBRECARGADO - ' + productsCount + ' productos';
+                cssClass = 'warning';
+            }
+            
+            let result = '<h3>📊 Estado de la Base de Datos:</h3>';
+            result += '<p><strong>Productos:</strong> ' + productsCount + ' items - ' + status + '</p>';
+            result += '<p><strong>Carrito:</strong> ' + cartCount + ' items</p>';
+            
+            if (productsCount < 37) {
+                result += '<p>💡 <strong>Solución:</strong> Usa "Resetear Base de Datos" o "Forzar Reinicialización"</p>';
+            }
+            
+            document.getElementById('result').innerHTML = result;
+            document.getElementById('result').className = cssClass;
+        }
+
+        function resetDatabase() {
+            if (!confirm('¿Estás seguro de resetear toda la base de datos? Se perderán todos los productos y el carrito.')) {
+                return;
+            }
+            
+            localStorage.removeItem('fondaLasFloresProducts');
+            localStorage.removeItem('fondaLasFloresCart');
+            
+            document.getElementById('result').innerHTML = 
+                '<div class="success"><h3>✅ Base de datos reseteada</h3><p>Ahora ejecuta "Forzar Reinicialización"</p></div>';
+        }
+
+        function forceReinitialize() {
+            // Cargar init.js manualmente
+            const script = document.createElement('script');
+            script.src = 'init.js';
+            script.onload = function() {
+                setTimeout(() => {
+                    document.getElementById('result').innerHTML = 
+                        '<div class="success"><h3>✅ Reinicialización forzada completada</h3><p>init.js se ejecutó correctamente</p></div>';
+                    checkDatabase();
+                }, 500);
+            };
+            document.head.appendChild(script);
+        }
+
+        // Verificar automáticamente al cargar la página
+        checkDatabase();
+    </script>
+</body>
+</html>

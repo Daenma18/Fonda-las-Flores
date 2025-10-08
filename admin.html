@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Fonda Las Flores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8e0000;
+            --secondary-color: #f8d568;
+            --accent-color: #2e7d32;
+            --light-color: #f9f9f9;
+            --dark-color: #333;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        /* Encabezado */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+        
+        .restaurant-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-info {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Botón de regreso */
+        .back-button {
+            display: inline-block;
+            margin: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        /* Contenedor principal */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Panel de administración */
+        .admin-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .search-box {
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .products-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+        }
+        
+        .product-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .product-info {
+            flex-grow: 1;
+        }
+        
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        
+        .product-category {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-right: 1rem;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-edit, .btn-delete {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-edit {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-edit:hover {
+            background-color: #e6c257;
+        }
+        
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Formulario de edición */
+        .edit-form {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        
+        .btn-save, .btn-cancel {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .btn-save {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-save:hover {
+            background-color: #246c34;
+        }
+        
+        .btn-cancel {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #7f8c8d;
+        }
+        
+        /* Estadísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Mensajes */
+        .message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-tabs {
+                flex-direction: column;
+            }
+            
+            .admin-tab {
+                border-bottom: 1px solid #eee;
+                border-left: 3px solid transparent;
+            }
+            
+            .admin-tab.active {
+                border-bottom: 1px solid #eee;
+                border-left: 3px solid var(--primary-color);
+            }
+            
+            .product-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .product-actions {
+                margin-top: 0.5rem;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="logo-container">
+            <i class="fas fa-utensils logo"></i>
+            <div>
+                <h1 class="restaurant-name">Fonda Las Flores</h1>
+                <p class="tagline">Panel de Administración</p>
+            </div>
+        </div>
+        <div class="contact-info">
+            <p>Mariano Matamoros #2, Centro, Jalpan de Serra, Qro. | Tel: (441) 1157720</p>
+        </div>
+    </header>
+    
+    <!-- Botón de regreso -->
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Volver al Sitio Principal
+    </a>
+    
+    <!-- Contenedor principal -->
+    <div class="container">
+        <h2 class="section-title">Panel de Administración</h2>
+        
+        <!-- Panel de administración -->
+        <div class="admin-panel">
+            <!-- Pestañas -->
+            <div class="admin-tabs">
+                <div class="admin-tab active" data-tab="products">Gestionar Productos</div>
+                <div class="admin-tab" data-tab="stats">Estadísticas</div>
+            </div>
+            
+            <!-- Contenido de pestañas -->
+            <div class="tab-content active" id="products-tab">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Buscar productos...">
+                </div>
+                
+                <div id="message-area"></div>
+                
+                <div class="products-list" id="products-list">
+                    <!-- Los productos se cargarán aquí dinámicamente -->
+                </div>
+                
+                <div id="edit-form-container" class="edit-form" style="display: none;">
+                    <h3>Editar Producto</h3>
+                    <form id="edit-product-form">
+                        <input type="hidden" id="edit-product-id">
+                        <div class="form-group">
+                            <label for="edit-product-name">Nombre del Producto</label>
+                            <input type="text" id="edit-product-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-category">Categoría</label>
+                            <select id="edit-product-category" required>
+                                <option value="">Selecciona una categoría</option>
+                                <option value="Moles">Moles</option>
+                                <option value="Caldo de Pollo/Res">Caldo de Pollo/Res</option>
+                                <option value="Para Preparar">Para Preparar</option>
+                                <option value="Tacos/Gorditas">Tacos/Gorditas</option>
+                                <option value="Tortas/Hamburguesas">Tortas/Hamburguesas</option>
+                                <option value="Bebidas">Bebidas</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-price">Precio (MXN)</label>
+                            <input type="number" id="edit-product-price" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel" id="cancel-edit">Cancelar</button>
+                            <button type="submit" class="btn-save">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="stats-tab">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-products">0</div>
+                        <div class="stat-label">Productos Totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-categories">0</div>
+                        <div class="stat-label">Categorías</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avg-price">$0.00</div>
+                        <div class="stat-label">Precio Promedio</div>
+                    </div>
+                </div>
+                
+                <h3>Productos por Categoría</h3>
+                <div id="category-stats">
+                    <!-- Las estadísticas por categoría se cargarán aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pie de página -->
+    <footer>
+        <div class="footer-content">
+            <p id="current-year">© 2023 Fonda Las Flores - Todos los derechos reservados</p>
+            <p>Horario: Lunes a Domingo 8:00 AM - 5:00 PM</p>
+        </div>
+    </footer>
+
+    <script>
+        // Actualizar año automáticamente
+        document.getElementById('current-year').textContent = 
+            `© ${new Date().getFullYear()} Fonda Las Flores - Todos los derechos reservados`;
+            
+        // Base de datos de productos (se cargará desde localStorage)
+        let products = [];
+        
+        // Cargar productos desde localStorage o usar datos de ejemplo
+        function loadProducts() {
+            const savedProducts = localStorage.getItem('fondaLasFloresProducts');
+            if (savedProducts) {
+                products = JSON.parse(savedProducts);
+                console.log('✅ Productos cargados desde localStorage:', products.length);
+                displayProducts();
+                updateStats();
+            } else {
+                // Si no hay productos, cargar desde init.js
+                console.log('⚠️ No hay productos en localStorage, ejecutando init.js...');
+                // Forzar la inicialización
+                const initScript = document.createElement('script');
+                initScript.src = 'init.js';
+                initScript.onload = function() {
+                    // Recargar después de un momento
+                    setTimeout(() => {
+                        const refreshedProducts = localStorage.getItem('fondaLasFloresProducts');
+                        if (refreshedProducts) {
+                            products = JSON.parse(refreshedProducts);
+                            console.log('✅ Productos cargados después de init:', products.length);
+                            displayProducts();
+                            updateStats();
+                        } else {
+                            console.error('❌ No se pudieron cargar los productos');
+                            showMessage('Error: No se pudieron cargar los productos. Verifica que init.js se ejecute correctamente.', 'error');
+                        }
+                    }, 500);
+                };
+                document.head.appendChild(initScript);
+            }
+        }
+
+        // Verificar estado de los productos
+        function checkProducts() {
+            const savedProducts = localStorage.getItem('fondaLasFloresProducts');
+            console.log('📦 Productos en localStorage:', savedProducts ? JSON.parse(savedProducts).length : 0);
+            
+            if (!savedProducts || JSON.parse(savedProducts).length === 0) {
+                console.log('🔄 Inicializando datos...');
+                // Ejecutar init.js manualmente
+                const script = document.createElement('script');
+                script.src = 'init.js';
+                script.onload = function() {
+                    console.log('✅ init.js cargado, recargando productos...');
+                    loadProducts();
+                    displayProducts();
+                    updateStats();
+                };
+                document.head.appendChild(script);
+            }
+        }
+        
+        // Guardar productos en localStorage
+        function saveProducts() {
+            localStorage.setItem('fondaLasFloresProducts', JSON.stringify(products));
+            console.log('💾 Productos guardados en localStorage:', products.length);
+        }
+        
+        // Mostrar productos en la lista
+        function displayProducts(filteredProducts = null) {
+            const productsList = document.getElementById('products-list');
+            const productsToDisplay = filteredProducts || products;
+            
+            if (productsToDisplay.length === 0) {
+                productsList.innerHTML = '<p>No se encontraron productos.</p>';
+                return;
+            }
+            
+            productsList.innerHTML = '';
+            
+            productsToDisplay.forEach(product => {
+                const productItem = document.createElement('div');
+                productItem.className = 'product-item';
+                productItem.innerHTML = `
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-category">${product.category}</div>
+                    </div>
+                    <div class="product-price">$${product.price.toFixed(2)}</div>
+                    <div class="product-actions">
+                        <button class="btn-edit" data-id="${product.id}">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-delete" data-id="${product.id}">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                `;
+                productsList.appendChild(productItem);
+            });
+            
+            // Agregar event listeners a los botones
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', () => editProduct(parseInt(btn.getAttribute('data-id'))));
+            });
+            
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', () => deleteProduct(parseInt(btn.getAttribute('data-id'))));
+            });
+        }
+        
+        // Filtrar productos
+        function filterProducts() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) || 
+                product.category.toLowerCase().includes(searchTerm)
+            );
+            displayProducts(filteredProducts);
+        }
+        
+        // Editar producto
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) {
+                showMessage('Producto no encontrado', 'error');
+                return;
+            }
+            
+            document.getElementById('edit-product-id').value = product.id;
+            document.getElementById('edit-product-name').value = product.name;
+            document.getElementById('edit-product-category').value = product.category;
+            document.getElementById('edit-product-price').value = product.price;
+            
+            document.getElementById('edit-form-container').style.display = 'block';
+            
+            // Scroll al formulario de edición
+            document.getElementById('edit-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Eliminar producto
+        function deleteProduct(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+                const productIndex = products.findIndex(p => p.id === id);
+                if (productIndex !== -1) {
+                    const productName = products[productIndex].name;
+                    products.splice(productIndex, 1);
+                    saveProducts();
+                    displayProducts();
+                    showMessage(`Producto "${productName}" eliminado correctamente`, 'success');
+                    updateStats();
+                }
+            }
+        }
+        
+        // Guardar cambios del producto editado
+        document.getElementById('edit-product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = parseInt(document.getElementById('edit-product-id').value);
+            const name = document.getElementById('edit-product-name').value.trim();
+            const category = document.getElementById('edit-product-category').value;
+            const price = parseFloat(document.getElementById('edit-product-price').value);
+            
+            if (!name || !category || isNaN(price) || price < 0) {
+                showMessage('Por favor, completa todos los campos correctamente', 'error');
+                return;
+            }
+            
+            const productIndex = products.findIndex(p => p.id === id);
+            if (productIndex !== -1) {
+                const oldProductName = products[productIndex].name;
+                products[productIndex].name = name;
+                products[productIndex].category = category;
+                products[productIndex].price = price;
+                
+                saveProducts();
+                displayProducts();
+                document.getElementById('edit-form-container').style.display = 'none';
+                showMessage(`Producto "${oldProductName}" actualizado correctamente`, 'success');
+                updateStats();
+            } else {
+                showMessage('Error: Producto no encontrado', 'error');
+            }
+        });
+        
+        // Cancelar edición
+        document.getElementById('cancel-edit').addEventListener('click', function() {
+            document.getElementById('edit-form-container').style.display = 'none';
+        });
+        
+        // Mostrar mensajes
+        function showMessage(message, type) {
+            const messageArea = document.getElementById('message-area');
+            messageArea.innerHTML = `<div class="message ${type}">${message}</div>`;
+            
+            setTimeout(() => {
+                messageArea.innerHTML = '';
+            }, 5000);
+        }
+        
+        // Actualizar estadísticas
+        function updateStats() {
+            // Productos totales
+            document.getElementById('total-products').textContent = products.length;
+            
+            // Categorías únicas
+            const categories = [...new Set(products.map(p => p.category))];
+            document.getElementById('total-categories').textContent = categories.length;
+            
+            // Precio promedio
+            const avgPrice = products.length > 0 ? 
+                products.reduce((sum, p) => sum + p.price, 0) / products.length : 0;
+            document.getElementById('avg-price').textContent = `$${avgPrice.toFixed(2)}`;
+            
+            // Productos por categoría
+            const categoryStats = document.getElementById('category-stats');
+            categoryStats.innerHTML = '';
+            
+            if (categories.length === 0) {
+                categoryStats.innerHTML = '<p>No hay categorías disponibles</p>';
+                return;
+            }
+            
+            categories.forEach(category => {
+                const categoryProducts = products.filter(p => p.category === category);
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'product-item';
+                categoryItem.innerHTML = `
+                    <div class="product-info">
+                        <div class="product-name">${category}</div>
+                    </div>
+                    <div class="product-price">${categoryProducts.length} producto${categoryProducts.length !== 1 ? 's' : ''}</div>
+                `;
+                categoryStats.appendChild(categoryItem);
+            });
+        }
+        
+        // Cambiar pestañas
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remover clase active de todas las pestañas
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Agregar clase active a la pestaña seleccionada
+                this.classList.add('active');
+                document.getElementById(`${this.getAttribute('data-tab')}-tab`).classList.add('active');
+                
+                // Actualizar estadísticas si se cambia a esa pestaña
+                if (this.getAttribute('data-tab') === 'stats') {
+                    updateStats();
+                }
+            });
+        });
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            
+            // Event listener para búsqueda
+            document.getElementById('search-input').addEventListener('input', filterProducts);
+            
+            // Verificar productos cada 2 segundos por si hay cambios
+            setInterval(() => {
+                const currentCount = products.length;
+                const savedProducts = localStorage.getItem('fondaLasFloresProducts');
+                if (savedProducts) {
+                    const newCount = JSON.parse(savedProducts).length;
+                    if (newCount !== currentCount) {
+                        console.log('🔄 Cambios detectados en productos, recargando...');
+                        loadProducts();
+                    }
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
