@@ -2,6 +2,68 @@
 // Variables para el carrito
 let cart = JSON.parse(localStorage.getItem('fondaLasFloresCart')) || [];
 
+// Función para inicializar productos si no existen
+function initializeProducts() {
+    if (!localStorage.getItem('fondaLasFloresProducts')) {
+        console.log('🔄 Inicializando productos desde carrito.js...');
+        
+        const initialProducts = [
+            // Moles (2 productos)
+            { id: 1, name: "Pollo en Mole Poblano", category: "Moles", price: 120 },
+            { id: 2, name: "Costilla de Puerco en Salsa Verde", category: "Moles", price: 130 },
+            
+            // Caldos (3 productos)
+            { id: 3, name: "Caldo de Pollo", category: "Caldo de Pollo/Res", price: 80 },
+            { id: 4, name: "Caldo de Res", category: "Caldo de Pollo/Res", price: 90 },
+            { id: 5, name: "Menudo (Pancita)", category: "Menudo", price: 85 },
+            
+            // Para Preparar (5 productos)
+            { id: 6, name: "Milanesa de Pollo", category: "Para Preparar", price: 95 },
+            { id: 7, name: "Milanesa de Res", category: "Para Preparar", price: 110 },
+            { id: 8, name: "Huevos a la Mexicana", category: "Para Preparar", price: 70 },
+            { id: 9, name: "Filete de Pescado Empanizado", category: "Para Preparar", price: 120 },
+            { id: 10, name: "Bistec de Res Encebollado", category: "Para Preparar", price: 115 },
+            
+            // Tacos/Gorditas (5 productos base)
+            { id: 11, name: "Gorditas de Migajas", category: "Tacos/Gorditas", price: 65 },
+            { id: 12, name: "Gorditas", category: "Tacos/Gorditas", price: 25 },
+            { id: 13, name: "Sopes", category: "Tacos/Gorditas", price: 70 },
+            { id: 14, name: "Quesadillas", category: "Tacos/Gorditas", price: 60 },
+            { id: 15, name: "Tacos", category: "Tacos/Gorditas", price: 15 },
+            
+            // Tortas/Hamburguesas (13 productos)
+            { id: 16, name: "Torta de Milanesa de Res", category: "Tortas/Hamburguesas", price: 90 },
+            { id: 17, name: "Torta de Pierna Adobada", category: "Tortas/Hamburguesas", price: 85 },
+            { id: 18, name: "Torta de Jamón", category: "Tortas/Hamburguesas", price: 70 },
+            { id: 19, name: "Torta de Chorizo", category: "Tortas/Hamburguesas", price: 75 },
+            { id: 20, name: "Torta de Chilaquiles", category: "Tortas/Hamburguesas", price: 80 },
+            { id: 21, name: "Hamburguesa Clásica", category: "Tortas/Hamburguesas", price: 85 },
+            { id: 22, name: "Hamburguesa Especial", category: "Tortas/Hamburguesas", price: 120 },
+            { id: 23, name: "Sincronizadas", category: "Tortas/Hamburguesas", price: 75 },
+            { id: 24, name: "Sincronizadas Especiales", category: "Tortas/Hamburguesas", price: 90 },
+            { id: 25, name: "Sándwich de Pollo", category: "Tortas/Hamburguesas", price: 65 },
+            { id: 26, name: "Sándwich Club", category: "Tortas/Hamburguesas", price: 95 },
+            { id: 27, name: "Salchipapas", category: "Tortas/Hamburguesas", price: 80 },
+            { id: 28, name: "Salchipapas Especiales", category: "Tortas/Hamburguesas", price: 110 },
+            
+            // Bebidas (9 productos)
+            { id: 29, name: "Licuados", category: "Bebidas", price: 35 },
+            { id: 30, name: "Limonada", category: "Bebidas", price: 25 },
+            { id: 31, name: "Naranjada", category: "Bebidas", price: 30 },
+            { id: 32, name: "Vaso de Leche", category: "Bebidas", price: 20 },
+            { id: 33, name: "Café de Olla", category: "Bebidas", price: 25 },
+            { id: 34, name: "Agua para Nescafé", category: "Bebidas", price: 15 },
+            { id: 35, name: "Jugo de Naranja Natural", category: "Bebidas", price: 40 },
+            { id: 36, name: "Refresco", category: "Bebidas", price: 30 },
+            { id: 37, name: "Agua de Sabor del Día", category: "Bebidas", price: 25 }
+        ];
+        
+        localStorage.setItem('fondaLasFloresProducts', JSON.stringify(initialProducts));
+        console.log('✅ 37 productos inicializados correctamente');
+    }
+    return JSON.parse(localStorage.getItem('fondaLasFloresProducts')) || [];
+}
+
 /**
  * Función para agregar productos al carrito CON GRUPACIÓN
  * @param {string} name - Nombre del producto
@@ -320,7 +382,7 @@ function showWelcomeMessage() {
     welcomeDiv.innerHTML = `
         ¡Hola! 👋 Soy el asistente virtual de <strong>Fonda Las Flores</strong>.<br><br>
         ¿En qué puedo ayudarte hoy? Puedo:
-        <br>• 📋 Mostrarte nuestro <strong>menú</strong>
+        <br>• 📋 Mostrarte nuestro <strong>menú completo</strong> (37 platillos)
         <br>• 🕐 Informarte sobre <strong>horarios</strong>
         <br>• 📍 Darte nuestra <strong>ubicación</strong>
         <br>• 🛒 Ayudarte a <strong>hacer un pedido</strong>
@@ -328,7 +390,7 @@ function showWelcomeMessage() {
         <br><br>
         <small>Escribe lo que necesites o selecciona una opción rápida:</small>
         <div class="quick-buttons">
-            <button class="quick-btn" onclick="handleQuickAction('menu')">📋 Ver Menú</button>
+            <button class="quick-btn" onclick="handleQuickAction('menu')">📋 Ver Menú Completo</button>
             <button class="quick-btn" onclick="handleQuickAction('order')">🛒 Hacer Pedido</button>
             <button class="quick-btn" onclick="handleQuickAction('hours')">🕐 Horarios</button>
             <button class="quick-btn" onclick="handleQuickAction('location')">📍 Ubicación</button>
@@ -427,7 +489,7 @@ function handleGeneralQuery(message) {
     }
     else {
         botDiv.innerHTML = `🤔 No estoy seguro de entenderte completamente. Puedo ayudarte con:
-            <br>• 📋 <strong>Menú completo</strong>
+            <br>• 📋 <strong>Menú completo (37 platillos)</strong>
             <br>• 🛒 <strong>Hacer pedidos</strong>
             <br>• 🕐 <strong>Horarios</strong>
             <br>• 📍 <strong>Ubicación</strong>
@@ -439,9 +501,10 @@ function handleGeneralQuery(message) {
     messages.appendChild(botDiv);
 }
 
-// MODIFICADA: Ahora usa precios actualizados desde la base de datos
+// FUNCIÓN MEJORADA: Ahora muestra TODAS las categorías y 37 productos
 function showMenu() {
-    const products = JSON.parse(localStorage.getItem('fondaLasFloresProducts')) || [];
+    // Asegurarse de que los productos estén inicializados
+    const products = initializeProducts();
     const messages = document.getElementById("chatbot-messages");
     const botDiv = document.createElement("div");
     botDiv.classList.add("bot-message");
@@ -456,24 +519,28 @@ function showMenu() {
     });
     
     let menuHTML = `
-        📋 <strong>MENÚ FONDA LAS FLORES</strong><br><br>
+        📋 <strong>MENÚ COMPLETO - FONDA LAS FLORES</strong><br>
+        <small>${products.length} deliciosos platillos disponibles</small><br><br>
     `;
     
-    // Mostrar productos por categoría
+    // Mostrar TODAS las categorías y productos
     Object.keys(categories).forEach(category => {
-        menuHTML += `<strong>${getCategoryIcon(category)} ${category}</strong><br>`;
+        menuHTML += `<strong>${getCategoryIcon(category)} ${category.toUpperCase()}</strong><br>`;
         
         categories[category].forEach(product => {
-            menuHTML += `• ${product.name} - $${product.price.toFixed(2)}<br>`;
+            menuHTML += `• ${product.name} - <strong>$${product.price.toFixed(2)}</strong><br>`;
         });
         
         menuHTML += `<br>`;
     });
     
     menuHTML += `
+        <em>💡 ¿Listo para ordenar? Selecciona "Hacer Pedido" para comenzar.</em>
+        
         <div class="quick-buttons">
             <button class="quick-btn" onclick="startOrderProcess()">🛒 Hacer Pedido</button>
             <button class="quick-btn" onclick="showPrices()">💰 Ver Precios</button>
+            <button class="quick-btn" onclick="toggleChatbot()">❌ Cerrar Menú</button>
         </div>
     `;
     
@@ -482,9 +549,9 @@ function showMenu() {
     messages.scrollTop = messages.scrollHeight;
 }
 
-// MODIFICADA: Ahora usa precios actualizados desde la base de datos
+// FUNCIÓN MEJORADA: Muestra precios de todas las categorías
 function showPrices() {
-    const products = JSON.parse(localStorage.getItem('fondaLasFloresProducts')) || [];
+    const products = initializeProducts();
     const messages = document.getElementById("chatbot-messages");
     const botDiv = document.createElement("div");
     botDiv.classList.add("bot-message");
@@ -499,16 +566,16 @@ function showPrices() {
     });
     
     let pricesHTML = `
-        💰 <strong>PRECIOS ACTUALIZADOS</strong><br><br>
+        💰 <strong>PRECIOS ACTUALIZADOS - TODAS LAS CATEGORÍAS</strong><br><br>
     `;
     
-    // Mostrar algunos productos destacados de cada categoría
-    Object.keys(categories).slice(0, 4).forEach(category => {
+    // Mostrar TODAS las categorías con algunos productos destacados
+    Object.keys(categories).forEach(category => {
         const categoryProducts = categories[category];
-        pricesHTML += `<strong>${category}:</strong><br>`;
+        pricesHTML += `<strong>${getCategoryIcon(category)} ${category}:</strong><br>`;
         
-        // Mostrar máximo 3 productos por categoría
-        categoryProducts.slice(0, 3).forEach(product => {
+        // Mostrar todos los productos de la categoría
+        categoryProducts.forEach(product => {
             pricesHTML += `• ${product.name} - $${product.price.toFixed(2)}<br>`;
         });
         
@@ -516,7 +583,7 @@ function showPrices() {
     });
     
     pricesHTML += `
-        <em>💡 ¿Te interesa algún platillo en específico? Puedo darte más detalles.</em>
+        <em>💡 ¿Te interesa algún platillo en específico? Puedo ayudarte a agregarlo a tu pedido.</em>
         
         <div class="quick-buttons">
             <button class="quick-btn" onclick="showMenu()">📋 Ver Menú Completo</button>
@@ -587,7 +654,11 @@ function openMaps() {
     window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
 }
 
+// FUNCIÓN MEJORADA: Muestra TODAS las categorías disponibles
 function startOrderProcess() {
+    // Asegurarse de que los productos estén inicializados
+    initializeProducts();
+    
     chatbotState.orderInProgress = true;
     chatbotState.currentStep = 'asking_category';
     
@@ -596,28 +667,30 @@ function startOrderProcess() {
     botDiv.classList.add("bot-message");
     
     botDiv.innerHTML = `
-        🛒 <strong>¡GENIAL! VAMOS A HACER TU PEDIDO</strong><br><br>
+        🛒 <strong>¡EMPEZCEMOS TU PEDIDO!</strong><br><br>
         
-        Te ayudo a agregar productos a tu carrito. ¿Qué categoría te interesa?<br><br>
+        Te ayudo a agregar productos a tu carrito. Selecciona una categoría:<br><br>
         
         <div class="quick-buttons">
             <button class="quick-btn" onclick="showCategoryProducts('Moles')">🍛 Moles</button>
             <button class="quick-btn" onclick="showCategoryProducts('Caldo de Pollo/Res')">🍲 Caldos</button>
+            <button class="quick-btn" onclick="showCategoryProducts('Menudo')">🥣 Menudo</button>
+            <button class="quick-btn" onclick="showCategoryProducts('Para Preparar')">👨‍🍳 Para Preparar</button>
             <button class="quick-btn" onclick="showCategoryProducts('Tacos/Gorditas')">🌮 Tacos/Gorditas</button>
-            <button class="quick-btn" onclick="showCategoryProducts('Tortas/Hamburguesas')">🥪 Tortas</button>
+            <button class="quick-btn" onclick="showCategoryProducts('Tortas/Hamburguesas')">🥪 Tortas/Hamburguesas</button>
             <button class="quick-btn" onclick="showCategoryProducts('Bebidas')">🥤 Bebidas</button>
         </div>
         <br>
-        <small>O escribe el nombre del platillo que deseas</small>
+        <small>O escribe el nombre exacto del platillo que deseas ordenar</small>
     `;
     
     messages.appendChild(botDiv);
     messages.scrollTop = messages.scrollHeight;
 }
 
-// MODIFICADA: Ahora usa precios actualizados desde la base de datos
+// FUNCIÓN MEJORADA: Muestra TODOS los productos de cada categoría
 function showCategoryProducts(category) {
-    const products = JSON.parse(localStorage.getItem('fondaLasFloresProducts')) || [];
+    const products = initializeProducts();
     const categoryProducts = products.filter(p => p.category === category);
     
     const messages = document.getElementById("chatbot-messages");
@@ -626,30 +699,34 @@ function showCategoryProducts(category) {
     
     if (categoryProducts.length === 0) {
         botDiv.innerHTML = `
-            <strong>${category}</strong><br><br>
-            <p>No hay productos disponibles en esta categoría.</p>
+            <strong>${getCategoryIcon(category)} ${category}</strong><br><br>
+            <p>⚠️ No hay productos disponibles en esta categoría en este momento.</p>
+            <p>Por favor selecciona otra categoría.</p>
         `;
     } else {
         let productsHTML = `
-            <strong>${category}</strong><br><br>
+            <strong>${getCategoryIcon(category)} ${category}</strong><br>
+            <small>${categoryProducts.length} productos disponibles</small><br><br>
         `;
         
         categoryProducts.forEach(product => {
             productsHTML += `
-                <div class="product-item">
-                    <strong>${product.name}</strong> - $${product.price.toFixed(2)}<br>
-                    <button class="add-to-cart-btn" onclick="addProductToCart('${product.name}', ${product.price}, '${category}')">
+                <div class="product-item" style="margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background: #f9f9f9;">
+                    <strong>${product.name}</strong><br>
+                    <span>Precio: <strong>$${product.price.toFixed(2)}</strong></span><br>
+                    <button class="add-to-cart-btn" onclick="addProductToCart('${product.name.replace(/'/g, "\\'")}', ${product.price}, '${category.replace(/'/g, "\\'")}')" style="background: var(--accent-color); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-top: 5px; font-weight: bold;">
                         ➕ Agregar al Carrito
                     </button>
                 </div>
-                <br>
             `;
         });
         
         productsHTML += `
+            <br>
             <div class="quick-buttons">
-                <button class="quick-btn" onclick="startOrderProcess()">📋 Otra Categoría</button>
+                <button class="quick-btn" onclick="startOrderProcess()">📋 Ver Otras Categorías</button>
                 <button class="quick-btn" onclick="finishOrder()">✅ Terminar Pedido</button>
+                <button class="quick-btn" onclick="openCartModal(); closeChatbot();">🛒 Ver Carrito Actual</button>
             </div>
         `;
         
@@ -824,6 +901,9 @@ function initMainCarousel() {
 
 // Inicialización cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar productos primero
+    initializeProducts();
+    
     updateCartCount();
     
     // Inicializar solo el carrusel del index
@@ -905,3 +985,4 @@ window.startOrderProcess = startOrderProcess;
 window.showCategoryProducts = showCategoryProducts;
 window.addProductToCart = addProductToCart;
 window.finishOrder = finishOrder;
+window.initializeProducts = initializeProducts;
